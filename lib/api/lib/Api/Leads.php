@@ -13,6 +13,8 @@ namespace Mautic\Api;
  * Leads Context
  *
  * This class is deprecated and will be removed in future versions! Use Contacts instead!
+ *
+ * @deprecated Use Contacts instead!
  */
 class Leads extends Contacts
 {
@@ -27,37 +29,34 @@ class Leads extends Contacts
     }
 
     /**
-     * Get a list of a lead's notes
-     *
-     * @param int    $id Contact ID
+     * @param        $id
      * @param string $search
      * @param int    $start
      * @param int    $limit
      * @param string $orderBy
      * @param string $orderByDir
-     * @param bool   $publishedOnly
      *
      * @return array|mixed
      */
     public function getLeadNotes($id, $search = '', $start = 0, $limit = 0, $orderBy = '', $orderByDir = 'ASC')
     {
-        $parameters = array();
+        $parameters = array(
+            'search'        => $search,
+            'start'         => $start,
+            'limit'         => $limit,
+            'orderBy'       => $orderBy,
+            'orderByDir'    => $orderByDir,
+        );
 
-        $args = array('search', 'start', 'limit', 'orderBy', 'orderByDir');
-
-        foreach ($args as $arg) {
-            if (!empty($$arg)) {
-                $parameters[$arg] = $$arg;
-            }
-        }
+        $parameters = array_filter($parameters);
 
         return $this->makeRequest('contacts/'.$id.'/notes', $parameters);
     }
 
     /**
-     * Get a segment of smart segments the lead is in
-     *
      * @param $id
+     *
+     * @return array|mixed
      */
     public function getLeadLists($id)
     {
@@ -65,9 +64,9 @@ class Leads extends Contacts
     }
 
     /**
-     * Get a segment of campaigns the lead is in
-     *
      * @param $id
+     *
+     * @return array|mixed
      */
     public function getLeadCampaigns($id)
     {

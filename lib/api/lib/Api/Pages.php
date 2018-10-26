@@ -23,24 +23,23 @@ class Pages extends Api
     /**
      * {@inheritdoc}
      */
-    public function create(array $parameters)
-    {
-        return $this->actionNotSupported('create');
-    }
+    protected $listName = 'pages';
 
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
-    {
-        return $this->actionNotSupported('edit');
-    }
+    protected $itemName = 'page';
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id)
-    {
-        return $this->actionNotSupported('delete');
-    }
+    protected $searchCommands = array(
+        'ids',
+        'is:published',
+        'is:unpublished',
+        'is:mine',
+        'is:uncategorized',
+        'category',
+        'lang',
+    );
 }

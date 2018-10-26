@@ -23,26 +23,33 @@ class Emails extends Api
     /**
      * {@inheritdoc}
      */
-    public function create(array $parameters)
-    {
-        return $this->actionNotSupported('create');
-    }
+    protected $listName = 'emails';
 
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
-    {
-        return $this->actionNotSupported('edit');
-    }
+    protected $itemName = 'email';
+
+    /**
+     * @var array
+     */
+    protected $bcRegexEndpoints = array(
+        'emails/(.*?)/contact/(.*?)/send' => 'emails/$1/send/contact/$2', // 2.6.0
+    );
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id)
-    {
-        return $this->actionNotSupported('delete');
-    }
+    protected $searchCommands = array(
+        'ids',
+        'is:published',
+        'is:unpublished',
+        'is:mine',
+        'is:uncategorized',
+        'category',
+        'lang',
+    );
+
 
     /**
      * Send email to the assigned lists
@@ -64,9 +71,9 @@ class Emails extends Api
      *
      * @return array|mixed
      */
-    public function sendToContact($id, $contactId)
+    public function sendToContact($id, $contactId, $parameters = array())
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/send/contact/'.$contactId, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/send', $parameters, 'POST');
     }
 
     /**

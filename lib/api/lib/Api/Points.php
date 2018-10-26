@@ -23,24 +23,27 @@ class Points extends Api
     /**
      * {@inheritdoc}
      */
-    public function create(array $parameters)
-    {
-        return $this->actionNotSupported('create');
-    }
+    protected $listName = 'points';
 
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
-    {
-        return $this->actionNotSupported('edit');
-    }
+    protected $itemName = 'point';
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id)
+    protected $searchCommands = array(
+        'ids',
+    );
+
+    /**
+     * Get list of available action types
+     *
+     * @return array|mixed
+     */
+    public function getPointActionTypes()
     {
-        return $this->actionNotSupported('delete');
+        return $this->makeRequest($this->endpoint.'/actions/types');
     }
 }

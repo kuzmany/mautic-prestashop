@@ -23,26 +23,32 @@ class Campaigns extends Api
     /**
      * {@inheritdoc}
      */
-    public function create(array $parameters)
-    {
-        return $this->actionNotSupported('create');
-    }
+    protected $listName = 'campaigns';
 
     /**
      * {@inheritdoc}
      */
-    public function edit($id, array $parameters, $createIfNotExists = false)
-    {
-        return $this->actionNotSupported('edit');
-    }
+    protected $itemName = 'campaign';
+
+    /**
+     * @var array
+     */
+    protected $bcRegexEndpoints = array(
+        'campaigns/(.*?)/contact/(.*?)/add'    => 'campaigns/$1/contact/add/$2', // 2.6.0
+        'campaigns/(.*?)/contact/(.*?)/remove' => 'campaigns/$1/contact/remove/$2' // 2.6.0
+    );
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id)
-    {
-        return $this->actionNotSupported('delete');
-    }
+    protected $searchCommands = array(
+        'ids',
+        'is:published',
+        'is:unpublished',
+        'is:mine',
+        'is:uncategorized',
+        'category',
+    );
 
     /**
      * Add a lead to the campaign
@@ -69,7 +75,7 @@ class Campaigns extends Api
      */
     public function addContact($id, $contactId)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/add/'.$contactId, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/add', array(), 'POST');
     }
 
     /**
@@ -97,6 +103,31 @@ class Campaigns extends Api
      */
     public function removeContact($id, $contactId)
     {
-        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/remove/'.$contactId, array(), 'POST');
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contact/'.$contactId.'/remove', array(), 'POST');
+    }
+
+    /**
+     * Get a list of stat items
+     *
+     * @param int    $id Campaign ID
+     * @param int    $start
+     * @param int    $limit
+     * @param array  $order
+     * @param array  $where
+     *
+     * @return array|mixed
+     */
+    public function getContacts($id, $start = 0, $limit = 0, array $order = array(), array $where = array())
+    {
+        $parameters = array();
+        $args = array('start', 'limit', 'order', 'where');
+
+        foreach ($args as $arg) {
+            if (!empty($$arg)) {
+                $parameters[$arg] = $$arg;
+            }
+        }
+
+        return $this->makeRequest($this->endpoint.'/'.$id.'/contacts', $parameters);
     }
 }
