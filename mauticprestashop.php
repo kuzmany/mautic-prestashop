@@ -97,7 +97,7 @@ class Mauticprestashop extends Module
             $leadApi = $api->newApi('contacts', $auth, $this->mauticBaseUrlApi);
             foreach ($array as $key => $a) {
                 foreach ($this->getPrestashopMauticMapping() as $key2 => $a2) {
-                    if ($key2 == $key) {
+                    if ($key2 == $key && !empty($a)) {
                         $data[$a2] = $a;
                     }
                 }
