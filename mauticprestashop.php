@@ -190,7 +190,7 @@ class Mauticprestashop extends Module
         $back = urlencode(base64_encode(serialize(
                     $this->context->link->getAdminLink('AdminModules', true)
                     . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name . '&authorizedone=1')));
-        $auth_url = Tools::getProtocol() . Tools::safeOutput(Tools::getServerName()) . __PS_BASE_URI__ . 'modules/' . $this->name . '/authorization.php?id_shop=' . $this->context->shop->id . '&id_shop_group=' . $this->context->shop->id_shop_group . '&back=' . $back . '&reset=1';
+        $auth_url = Tools::getProtocol() . Tools::safeOutput(Tools::getHttpHost()) . __PS_BASE_URI__ . 'modules/' . $this->name . '/authorization.php?id_shop=' . $this->context->shop->id . '&id_shop_group=' . $this->context->shop->id_shop_group . '&back=' . $back . '&reset=1';
         $this->context->smarty->assign(array(
             'has_data' => ((!Configuration::get('MAUTICPRESTASHOP_BASE_URL') || !Configuration::get('MAUTICPRESTASHOP_CLIENT_KEY') || !Configuration::get('MAUTICPRESTASHOP_CLIENT_SECRET')) ? false : true),
             'error' => Tools::getIsset('error'),
@@ -481,7 +481,7 @@ class Mauticprestashop extends Module
             'version' => 'OAuth1a',
             'clientKey' => Configuration::get('MAUTICPRESTASHOP_CLIENT_KEY'),
             'clientSecret' => Configuration::get('MAUTICPRESTASHOP_CLIENT_SECRET'),
-            'callback' => Tools::getProtocol() . Tools::safeOutput(Tools::getServerName()) . __PS_BASE_URI__ . '/modules/mauticprestashop/authorization.php'
+            'callback' => Tools::getProtocol() . Tools::safeOutput(Tools::getHttpHost()). __PS_BASE_URI__ . '/modules/mauticprestashop/authorization.php'
         );
         if (Tools::getIsset('back')) {
             $settings['callback'] .= '?back=' . urlencode(Tools::getValue('back'));
